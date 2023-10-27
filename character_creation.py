@@ -154,7 +154,7 @@ def character_creation():
         # Reroll stats
         print("Do you want to reroll your character's stats? (yes/no): ")
         reroll_choice = input()
-        if reroll_choice.lower() == 'yes':
+        if reroll_choice.lower() == 'yes' or 'y':
             reroll_stats(character, 5, 15)
             print(display_character_status(character))
         else:
