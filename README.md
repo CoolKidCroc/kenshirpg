@@ -1,6 +1,6 @@
 # KenshiRPG
 
-What's up it's your boy Cool Kid Croc here, I spent 3 days coding this in python. It's buggy so don't send feedback. 
+What's up it's your boy Cool Kid Croc here, I spent 3 days coding this in python.
 
 ### Installing and running the game
 
