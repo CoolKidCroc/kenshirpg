@@ -497,12 +497,12 @@ def city_menu(character):
             print("6. Rest at home")
             print("7. Buy a bounty map")
             print("8. Join the caravan to Flats Lagoon")
-            print("9. Quit to the main menu")
+            print("9. Exit and save the game")
         else:
             print("6. Purchase a home")
             print("7. Buy a bounty map")
             print("8. Join the caravan to Flats Lagoon")
-            print("9. Exit the game")
+            print("9. Exit and save the game")
 
         choice = input("Enter your choice: ")
 
