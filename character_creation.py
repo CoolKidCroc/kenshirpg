@@ -15,9 +15,6 @@ character = {
     'energy': 0,
     'time': (1, datetime.time(12, 0)),
     'cats': 0,
-    'max_strength': 0,
-    'max_dexterity': 0,
-    'max_toughness': 0,
     'max_health': 0,
     'max_energy': 0,
 }
@@ -45,14 +42,13 @@ def choose_race():
 
 def reroll_stats(character, min_stat_value, max_stat_value):
     # Reset character stats
-    character['strength'] = character['max_strength'] = random.randint(min_stat_value, max_stat_value)
-    character['dexterity'] = character['max_dexterity'] = random.randint(min_stat_value, max_stat_value)
-    character['toughness'] = character['max_toughness'] = random.randint(min_stat_value, max_stat_value)
+    character['strength'] = random.randint(min_stat_value, max_stat_value)
+    character['dexterity'] = random.randint(min_stat_value, max_stat_value)
+    character['toughness'] = random.randint(min_stat_value, max_stat_value)
     character['athletics'] = random.randint(min_stat_value, max_stat_value)
     
     # Update energy based on the rerolled toughness, and also update max_energy.
     character['energy'] = min(character['energy'] + (character['toughness'] * 2), character['max_energy'])
-    character['max_energy'] = character['energy']  # Update max_energy
     
     # Update health based on the rerolled toughness, but don't exceed the max_health.
     character['health'] = min(character['health'] + (character['toughness'] * 10), character['max_health'])
@@ -64,12 +60,12 @@ def display_character_status(character):
     formatted_text += "Character stats:\n"
     formatted_text += f"Name: {character['name']}\n"
     formatted_text += f"Race: {character['race']}\n"
-    formatted_text += f"Strength: {character['strength']} / {character['max_strength']}\n"
-    formatted_text += f"Dexterity: {character['dexterity']} / {character['max_dexterity']}\n"
-    formatted_text += f"Toughness: {character['toughness']} / {character['max_toughness']}\n"
+    formatted_text += f"Strength: {character['strength']}\n"  # Removed the / {character['max_strength']}
+    formatted_text += f"Dexterity: {character['dexterity']}\n"  # Removed the / {character['max_dexterity']}
+    formatted_text += f"Toughness: {character['toughness']}\n"
+    formatted_text += f"Athletics: {character['athletics']}\n"
     formatted_text += f"Health: {character['health']} / {character['max_health']}\n"
     formatted_text += f"Energy: {character['energy']} / {character['max_energy']}\n"
-    formatted_text += f"Athletics: {character['athletics']}\n"
     formatted_text += f"Level: {character['level']}\n"
     formatted_text += f"Experience: {character['experience']}\n"
     formatted_text += f"Time: Day {character['time'][0]}, {character['time'][1].strftime('%H:%M')}\n"
@@ -91,64 +87,62 @@ def character_creation():
     }
     chosen_race = race_dict.get(race_choice, "Unknown")
 
-    while True:
-        character['name'] = name
-        character['race'] = chosen_race
-        character['level'] = 1
-        character['experience'] = 0
-        character['health'] = 0
-        character['energy'] = 0
-        character['time'] = (1, datetime.time(12, 0))
+    character['name'] = name
+    character['race'] = chosen_race
+    character['level'] = 1
+    character['experience'] = 0
+    character['health'] = 0
+    character['energy'] = 0
+    character['time'] = (1, datetime.time(12, 0))
         
-        # Set cats and stats based on the chosen race
-        if race_choice == '1':  # Human
-            character['strength'] = 10
-            character['dexterity'] = 10
-            character['toughness'] = 10
-            character['health'] = 100
-            character['athletics'] = 5
-            character['cats'] = 0
-        elif race_choice == '2':  # Hiver
-            character['strength'] = 8
-            character['dexterity'] = 12
-            character['toughness'] = 8
-            character['health'] = 80
-            character['athletics'] = 8
-            character['cats'] = 0
-        elif race_choice == '3':  # Shek
-            character['strength'] = 12
-            character['dexterity'] = 8
-            character['toughness'] = 12
-            character['health'] = 120
-            character['athletics'] = 3
-            character['cats'] = 0
-        elif race_choice == '4':  # Skeleton
-            character['strength'] = 11
-            character['dexterity'] = 9
-            character['toughness'] = 10
-            character['health'] = 90
-            character['athletics'] = 6
-            character['cats'] = 0
+    
+    # Set stats based on the chosen race
+    if race_choice == '1':  # Human
+        character['strength'] = 10
+        character['dexterity'] = 10
+        character['toughness'] = 10
+        character['health'] = 100
+        character['athletics'] = 5
+        character['cats'] = 0
+    elif race_choice == '2':  # Hiver
+        character['strength'] = 8
+        character['dexterity'] = 12
+        character['toughness'] = 8
+        character['health'] = 80
+        character['athletics'] = 8
+        character['cats'] = 0
+    elif race_choice == '3':  # Shek
+        character['strength'] = 12
+        character['dexterity'] = 8
+        character['toughness'] = 12
+        character['health'] = 120
+        character['athletics'] = 3
+        character['cats'] = 0
+    elif race_choice == '4':  # Skeleton
+        character['strength'] = 11
+        character['dexterity'] = 9
+        character['toughness'] = 10
+        character['health'] = 90
+        character['athletics'] = 6
+        character['cats'] = 0
 
-        # Display the character's stats
-        print(display_character_status(character))
+    # Display the character's stats
+    print(display_character_status(character))
 
+    while True:
         # Reroll stats
         print("Do you want to reroll your character's stats? (yes/no): ")
         reroll_choice = input()
         if reroll_choice.lower() == 'yes':
-            reroll_stats(character, 5, 15)  # You can adjust the min and max stat values
-            print(display_character_status(character))  # Display the character's stats
+            reroll_stats(character, 5, 15)
+            print(display_character_status(character))
         else:
-            break  # Exit the loop if the player doesn't want to reroll
+            break
 
-    # Set max values based on initial values
-    character['max_strength'] = character['strength']
-    character['max_dexterity'] = character['dexterity']
-    character['max_toughness'] = character['toughness']
+    # Set max energy based on toughness
+    character['max_energy'] = character['toughness'] * 10
+    character['energy'] = character['max_energy']
     character['max_health'] = character['health']
-    character['max_energy'] = character['toughness'] * 10  # Using toughness for max_energy
-    character['energy'] = character['max_energy']  # Set current energy to max_energy
 
     return character
 

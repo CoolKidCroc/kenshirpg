@@ -9,33 +9,55 @@ def rest(character):
     character['energy'] = min(character['energy'] + 20, 100)
     print("You take a moment to rest and restore some energy.")
 
-def calculate_damage(strength, toughness):
+def calculate_damage(strength, toughness, critical_hit=False):
     base_damage = random.randint(1, 10)
     adjusted_damage = base_damage + (strength - toughness)
+    if critical_hit:
+        adjusted_damage *= 2  # Double the damage for critical hits
     return max(adjusted_damage, 1)  # Ensure damage is at least 1
 
+def calculate_critical_hit_chance(attacker_dexterity, defender_dexterity):
+    if attacker_dexterity > 2 * defender_dexterity:  # 200% more dexterity
+        return 1.0  # 100% critical hit chance
+    else:
+        return attacker_dexterity / (2 * defender_dexterity)  # Proportional chance
+
 def handle_attack(attacker, defender):
-    # Determine attacker's strength
+    # Determine attacker's stats
     if isinstance(attacker, dict):
         attacker_strength = attacker.get('strength')
+        attacker_dexterity = attacker.get('dexterity')
         attacker_name = attacker.get('name')
     else:  # Assume attacker is an instance of the Enemy class
         attacker_strength = attacker.strength
+        attacker_dexterity = attacker.dexterity
         attacker_name = attacker.name
 
-    # Determine defender's toughness and name
+    # Determine defender's stats
     if isinstance(defender, dict):
         defender_toughness = defender.get('toughness')
+        defender_dexterity = defender.get('dexterity')
         defender_name = defender.get('name')
-        defender['health'] -= calculate_damage(attacker_strength, defender_toughness)
     else:  # Assume defender is an instance of the Enemy class
         defender_toughness = defender.toughness
+        defender_dexterity = defender.dexterity
         defender_name = defender.name
-        defender.health -= calculate_damage(attacker_strength, defender_toughness)
+
+    # Check for critical hit
+    critical_hit_chance = calculate_critical_hit_chance(attacker_dexterity, defender_dexterity)
+    is_critical = random.random() < critical_hit_chance
+
+    damage_dealt = calculate_damage(attacker_strength, defender_toughness, critical_hit=is_critical)
+    if isinstance(defender, dict):
+        defender['health'] -= damage_dealt
+    else:  # Assume defender is an instance of the Enemy class
+        defender.health -= damage_dealt
 
     # Print a message about the attack
-    damage_dealt = calculate_damage(attacker_strength, defender_toughness)
-    print(f"{attacker_name} attacks {defender_name} for {damage_dealt} damage!")
+    if is_critical:
+        print(f"Critical Hit! {attacker_name} attacks {defender_name} for {damage_dealt} damage!")
+    else:
+        print(f"{attacker_name} attacks {defender_name} for {damage_dealt} damage!")
 
 def print_stats(character, enemy):
     print(f"Your Health: {character['health']} | Your Energy: {character['energy']} | "

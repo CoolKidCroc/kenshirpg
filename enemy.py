@@ -6,10 +6,10 @@ class Enemy:
         self.strength = strength
         self.dexterity = dexterity
         self.toughness = toughness
+        self.athletics = athletics
         self.health = health
         self.energy = energy
-        self.athletics = athletics
-
+        
 enemy_stats = {
     'bonedog': Enemy('Bonedog', 8, 5, 10, 75, 30, 5),
     'beakthing': Enemy('Beakthing', 15, 10, 10, 150, 35, 6),
@@ -57,39 +57,49 @@ def random_enemy(character):
         character['level'] = 1
 
     # Create a list of potential enemies based on player's level
-    potential_enemies = [enemy_type for enemy_type, base_stats in enemy_stats.items()
+    potential_enemies = [enemy for enemy, base_stats in enemy_stats.items()
                          if (character['level'] <= 5 and base_stats.health <= 100) or
                          (character['level'] > 5 and base_stats.health > 100)]
 
     # Randomly select an enemy type from the potential list
-    enemy_type = random.choice(potential_enemies)
+    selected_enemy = random.choice(potential_enemies)
 
     # Get the base stats for the selected enemy type
-    base_stats = enemy_stats[enemy_type]
+    base_stats = enemy_stats[selected_enemy]
 
-    # Modify stats based on character level
-    modified_stats = Enemy(
-        base_stats.name,
-        base_stats.strength + character['level'] * 2,
-        base_stats.dexterity,
-        base_stats.toughness + character['level'] * 2,
-        base_stats.health + character['level'] * 10,
-        base_stats.energy,
-        base_stats.athletics
-    )
+    # Modify stats based on character level (slightly reducing the scaling)
+    modified_strength = base_stats.strength + character['level']
+    modified_toughness = base_stats.toughness + character['level']
+    modified_health = base_stats.health + character['level'] * 5
+
+    modified_enemy = Enemy(
+    base_stats.name,
+    modified_strength,
+    base_stats.dexterity,
+    modified_toughness,
+    modified_health,          # Corrected the order here
+    base_stats.energy,
+    base_stats.athletics      # And here
+)
+
 
     # Calculate rewards based on the enemy's health
-    enemy_health = modified_stats.health
-    cats_reward = max(1, enemy_health // 10)
-    experience_reward = max(1, enemy_health // 5)
+    cats_reward = max(1, modified_health // 20)
+    experience_reward = max(1, modified_health // 10)
 
-    # Return the modified enemy stats as an object
-    return modified_stats, {
-        'name': enemy_type,
-        'strength': modified_stats.strength,
-        'health': modified_stats.health,
+    # Construct the final enemy dictionary
+    enemy_dict = {
+        'name': selected_enemy,
+        'strength': modified_strength,
+        'dexterity': base_stats.dexterity,
+        'toughness': modified_toughness,
+        'athletics': base_stats.athletics,
+        'health': modified_health,
+        'energy': base_stats.energy,
         'rewards': {
             'cats': cats_reward,
             'experience': experience_reward,
         }
     }
+
+    return modified_enemy, enemy_dict
