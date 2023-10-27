@@ -2,7 +2,7 @@ import random
 from battle import battle
 from time_functions import advance_time
 from enemy import random_enemy, enemy_stats, Enemy
-from character_creation import character_creation, display_character_status
+from character_creation import character_creation, display_character_status, save_game
 from stats import check_level_up, level_up, rest, decrease_energy, view_character_stats
 
 # Define LEVEL_UP_POINTS as a global constant
@@ -69,8 +69,9 @@ def explore_city(character):
             print("1. Talk to a city guard")
             print("2. Visit the marketplace")
             print("3. Visit the Shinobi Thieves")
-            print("4. Back to the main menu")
-            choice = input("Enter your choice (1/2/3/4): ")
+            print("4. Talk to B Zero 1 the saver")
+            print("5. Back to the main menu")
+            choice = input("Enter your choice (1/2/3/4/5): ")
             if choice == '1':
                 talk_to_city_guard(character)
             elif choice == '2':
@@ -78,11 +79,33 @@ def explore_city(character):
             elif choice == '3':
                 visit_shinobi_thieves(character)
             elif choice == '4':
+                talk_to_b_zero_1(character)
+            elif choice == '5':
                 break
             else:
                 print("Invalid choice. Please select between the options provided.")
     else:
         print("You are too exhausted to explore. You need to rest.")
+
+def talk_to_b_zero_1(character):
+    print("You approach B Zero 1, a robot standing erect with a shiny metallic body.")
+    print('"Greetings, human!" B Zero 1 says in a robotic tone. "How may I assist your binary processes today?"')
+    while True:
+        print("Options:")
+        print("1. What's your function, B Zero 1?")
+        print("2. Can you save my progress?")
+        print("3. I think I'll pass, you're too digital for me.")
+        choice = input("Enter your choice (1/2/3): ")
+        if choice == '1':
+            print('"I am B Zero 1, programmed to assist humans and provide them with the option of saving their state in this digital world."')
+        elif choice == '2':
+            save_game(character)
+            print('"State saved successfully. All your bytes are where they belong," B Zero 1 reports with a hint of electronic glee.')
+        elif choice == '3':
+            print('"Farewell, human. May your circuits always find the optimal path."')
+            break
+        else:
+            print("Invalid choice. Please choose between the provided options.")
 
 def visit_shinobi_thieves(character):
     print("You arrive at the hideout of the Shinobi Thieves.")
