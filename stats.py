@@ -6,19 +6,13 @@ def check_level_up(character):
         level_up(character, character['level'] + 1)
         
 
-LEVEL_UP_POINTS = 100  # Global constant for level up
-
-def level_up(character):
-    """Check if the character has enough XP to level up and apply level up benefits."""
-    while character['experience'] >= LEVEL_UP_POINTS:
-        character['experience'] -= LEVEL_UP_POINTS
-        new_level = character['level'] + 1
-        print(f"Congratulations! You have reached level {new_level}!")
-        character['strength'] += 5
-        character['max_health'] += 20
-        character['max_energy'] += 5
-        character['health'] = min(character['health'] + 20, character['max_health'])
-        character['level'] = new_level 
+def level_up(character, new_level):
+    print(f"Congratulations! You have reached level {new_level}!")
+    character['strength'] += 2
+    character['max_health'] += 20
+    character['max_energy'] += 5
+    character['health'] = min(character['health'] + 20, character['max_health'])
+    character['level'] = new_level
 
 def rest(character):
     character['health'] = character['max_health']
