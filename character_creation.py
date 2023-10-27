@@ -1,5 +1,6 @@
 import random
 import datetime
+import pickle
 
 # Define the character dictionary
 character = {
@@ -18,6 +19,21 @@ character = {
     'max_health': 0,
     'max_energy': 0,
 }
+
+def save_game(character):
+    with open('game_save.pkl', 'wb') as file:
+        pickle.dump(character, file)
+    print("Game has been saved!")
+
+def load_game():
+    try:
+        with open('game_save.pkl', 'rb') as file:
+            character = pickle.load(file)
+        print("Game has been loaded!")
+        return character
+    except FileNotFoundError:
+        print("Save file not found.")
+        return None
 
 def get_character_name():
     while True:
@@ -126,6 +142,11 @@ def character_creation():
         character['athletics'] = 6
         character['cats'] = 0
 
+    # Set the character's initial health to their max health and energy to max energy based on toughness
+    character['health'] = character['max_health']
+    character['max_energy'] = character['toughness'] * 10
+    character['energy'] = character['max_energy']
+
     # Display the character's stats
     print(display_character_status(character))
 
@@ -138,11 +159,6 @@ def character_creation():
             print(display_character_status(character))
         else:
             break
-
-    # Set max energy based on toughness
-    character['max_energy'] = character['toughness'] * 10
-    character['energy'] = character['max_energy']
-    character['max_health'] = character['health']
 
     return character
 

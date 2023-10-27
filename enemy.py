@@ -82,7 +82,6 @@ def random_enemy(character):
     base_stats.athletics      # And here
 )
 
-
     # Calculate rewards based on the enemy's health
     cats_reward = max(1, modified_health // 20)
     experience_reward = max(1, modified_health // 10)
