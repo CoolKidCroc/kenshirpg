@@ -101,28 +101,28 @@ def character_creation():
         character['strength'] = 10
         character['dexterity'] = 10
         character['toughness'] = 10
-        character['health'] = 100
+        character['max_health'] = 100
         character['athletics'] = 5
         character['cats'] = 0
     elif race_choice == '2':  # Hiver
         character['strength'] = 8
         character['dexterity'] = 12
         character['toughness'] = 8
-        character['health'] = 80
+        character['max_health'] = 80
         character['athletics'] = 8
         character['cats'] = 0
     elif race_choice == '3':  # Shek
         character['strength'] = 12
         character['dexterity'] = 8
         character['toughness'] = 12
-        character['health'] = 120
+        character['max_health'] = 120
         character['athletics'] = 3
         character['cats'] = 0
     elif race_choice == '4':  # Skeleton
         character['strength'] = 11
         character['dexterity'] = 9
         character['toughness'] = 10
-        character['health'] = 90
+        character['max_health'] = 90
         character['athletics'] = 6
         character['cats'] = 0
 
