@@ -319,7 +319,8 @@ def bar_actions(character):
             print("1. Ale (5 cats)")
             print("2. Rum (10 cats)")
             print("3. Whiskey (15 cats)")
-            drink_choice = input("Enter your drink choice (1/2/3): ")
+            print("4. Stop talking to the bartender")
+            drink_choice = input("Enter your drink choice (1/2/3/4): ")
 
             if drink_choice == '1' and character['cats'] >= 5:
                 character['cats'] -= 5
@@ -344,6 +345,10 @@ def bar_actions(character):
                 print(f"Energy After Whiskey: {character['energy']}") # Debugging line
                 print(f"Health After Whiskey: {character['health']}") # Debugging line
                 print("You sip the refreshing whiskey and feel a surge of energy and health!")
+                advance_time(character, 4)
+
+            elif drink_choice == '4':
+                print("You walk away from the bartender")
                 advance_time(character, 4)
 
         elif choice == '2':
@@ -497,7 +502,7 @@ def city_menu(character):
             print("6. Purchase a home")
             print("7. Buy a bounty map")
             print("8. Join the caravan to Flats Lagoon")
-            print("9. Quit to the main menu")
+            print("9. Exit the game")
 
         choice = input("Enter your choice: ")
 
@@ -519,7 +524,9 @@ def city_menu(character):
         if choice in options:
             options[choice](character)
         elif choice == '9':
-            break
+            save_game(character)
+            print("Game saved! Exiting...")
+            exit() # could also be changed to intro_screen() to restart the game
         else:
             print("Invalid choice. Please select a valid option.")
 
